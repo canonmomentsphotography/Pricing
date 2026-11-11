@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Pricing & Hourly Rate Calculator</title>
+    <title>canon.moment.s - Booking & Pricing Calculator</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,479 +12,312 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e',
-                        }
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b',
+                        accent: '#38bdf8',
+                        accenthover: '#0ea5e9'
                     }
                 }
             }
         }
     </script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Font Inter -->
+    <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Custom scrollbar for better aesthetics */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 4px;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200">
+<body class="bg-darkbg text-slate-100 min-h-screen flex flex-col justify-between selection:bg-accent selection:text-slate-900">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <!-- Header Section -->
-        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 pb-6 border-b border-slate-200 dark:border-slate-800">
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                    <i data-lucide="calculator" class="w-8 h-8 text-brand-600 dark:text-brand-500"></i>
-                    Rate & Pricing Calculator
-                </h1>
-                <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-1">
-                    Calculate custom rates, estimate project quotes, and reference industry tiers.
-                </p>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <!-- Theme Switcher -->
-                <button id="themeToggle" class="p-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500" title="Toggle Theme">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Tier Reference Guide Section -->
-        <section class="mb-10">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                    <i data-lucide="award" class="w-5 h-5 text-brand-500"></i>
-                    Hourly Rate Tier Reference Guide
-                </h2>
-                <span class="text-xs text-slate-500 dark:text-slate-400">Click a tier rate to set shoot rate</span>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Tier 1 -->
-                <div onclick="applyTierRate(60)" class="group cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-brand-500 dark:hover:border-brand-500 transition-all duration-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
-                                Entry / Semi-Pro
-                            </span>
-                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-brand-500 transition-colors"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-slate-900 dark:text-white my-2">$50 – $75 <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ hr</span></div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Standard portraits, small personal events, local headshots, and building up a foundational portfolio.
-                        </p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-end">
-                        <span class="text-xs font-medium text-brand-600 dark:text-brand-400 group-hover:underline">Use $60/hr rate &rarr;</span>
-                    </div>
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/60 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
+                    <i class="fa-solid fa-camera-retro text-white text-lg"></i>
                 </div>
-
-                <!-- Tier 2 -->
-                <div onclick="applyTierRate(100)" class="group cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-brand-500 dark:hover:border-brand-500 transition-all duration-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-brand-100 dark:bg-brand-950/60 text-brand-700 dark:text-brand-400">
-                                Mid-Level Freelancer
-                            </span>
-                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-brand-500 transition-colors"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-slate-900 dark:text-white my-2">$75 – $125 <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ hr</span></div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Small business branding, commercial lookbooks, editorial content, and high-end creative direction.
-                        </p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-end">
-                        <span class="text-xs font-medium text-brand-600 dark:text-brand-400 group-hover:underline">Use $100/hr rate &rarr;</span>
-                    </div>
-                </div>
-
-                <!-- Tier 3 -->
-                <div onclick="applyTierRate(175)" class="group cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-brand-500 dark:hover:border-brand-500 transition-all duration-200 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400">
-                                Professional Studio
-                            </span>
-                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400 group-hover:text-brand-500 transition-colors"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-slate-900 dark:text-white my-2">$150+ <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ hr</span></div>
-                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Corporate events, national ad campaigns, full commercial productions, and multi-location gigs.
-                        </p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-end">
-                        <span class="text-xs font-medium text-brand-600 dark:text-brand-400 group-hover:underline">Use $175/hr rate &rarr;</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Presets Bar -->
-        <div class="mb-6 flex flex-wrap items-center gap-2">
-            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mr-2 flex items-center gap-1">
-                <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> Quick Presets:
-            </span>
-            <button onclick="loadPreset('portrait')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                Quick Portrait Shoot
-            </button>
-            <button onclick="loadPreset('event')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                Standard Freelance Event
-            </button>
-            <button onclick="loadPreset('studio')" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                Full Day Studio Gig
-            </button>
-            <button onclick="resetCalculator()" class="ml-auto px-3 py-1.5 text-xs font-medium rounded-lg text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors flex items-center gap-1">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset All
-            </button>
-        </div>
-
-        <!-- Main Calculator Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            <!-- Inputs Form (8 Cols) -->
-            <div class="lg:col-span-7 bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-7 border border-slate-200 dark:border-slate-700/60 shadow-sm">
-                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-6 border-b border-slate-100 dark:border-slate-700/50 pb-3 flex items-center gap-2">
-                    <i data-lucide="sliders" class="w-5 h-5 text-brand-500"></i>
-                    Package Inputs
-                </h3>
-
-                <form id="calcForm" onsubmit="event.preventDefault();" class="space-y-5">
-                    
-                    <!-- Shoot Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Shoot Hours
-                            </label>
-                            <div class="relative">
-                                <input type="number" id="shootHours" step="0.5" min="0" value="2" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                                <span class="absolute right-3 top-2.5 text-xs text-slate-400">hrs</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Shoot Hourly Rate ($)
-                            </label>
-                            <div class="relative">
-                                <input type="number" id="shootRate" step="5" min="0" value="100" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                                <span class="absolute right-3 top-2.5 text-xs text-slate-400">$/hr</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Editing Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Editing Hours
-                            </label>
-                            <div class="relative">
-                                <input type="number" id="editHours" step="0.5" min="0" value="3" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                                <span class="absolute right-3 top-2.5 text-xs text-slate-400">hrs</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Editing Hourly Rate ($)
-                            </label>
-                            <div class="relative">
-                                <input type="number" id="editRate" step="5" min="0" value="50" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                                <span class="absolute right-3 top-2.5 text-xs text-slate-400">$/hr</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Extra Deliverables Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Extra Photos Count
-                            </label>
-                            <input type="number" id="extraPhotos" step="1" min="0" value="5" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Price per Extra Photo ($)
-                            </label>
-                            <div class="relative">
-                                <input type="number" id="photoRate" step="1" min="0" value="15" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                                <span class="absolute right-3 top-2.5 text-xs text-slate-400">$/photo</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Travel and Fixed Fees -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Travel Fee ($)
-                            </label>
-                            <input type="number" id="travelFee" step="5" min="0" value="35" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                                Fixed Overhead / Fees ($)
-                            </label>
-                            <input type="number" id="fixedFee" step="5" min="0" value="25" class="w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" oninput="calculate()">
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Dynamic Breakdown Summary (5 Cols) -->
-            <div class="lg:col-span-5 bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-7 border border-slate-200 dark:border-slate-700/60 shadow-lg flex flex-col justify-between">
                 <div>
-                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-700/50 pb-3 flex items-center justify-between">
-                        <span class="flex items-center gap-2">
-                            <i data-lucide="receipt" class="w-5 h-5 text-brand-500"></i>
-                            Quote Summary
-                        </span>
-                        <span class="text-xs text-slate-400 font-normal">Live Estimate</span>
-                    </h3>
-
-                    <!-- Detailed Table -->
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center py-1">
-                            <span class="text-slate-600 dark:text-slate-400">
-                                Shoot Subtotal
-                                <span class="block text-xs text-slate-400" id="shootDetails">0.5 hrs @ $35/hr</span>
-                            </span>
-                            <span class="font-medium text-slate-800 dark:text-slate-200" id="subtotalShoot">$0.00</span>
-                        </div>
-
-                        <div class="flex justify-between items-center py-1 border-t border-slate-100 dark:border-slate-700/40">
-                            <span class="text-slate-600 dark:text-slate-400">
-                                Editing Subtotal
-                                <span class="block text-xs text-slate-400" id="editDetails">0.5 hrs @ $35/hr</span>
-                            </span>
-                            <span class="font-medium text-slate-800 dark:text-slate-200" id="subtotalEdit">$0.00</span>
-                        </div>
-
-                        <div class="flex justify-between items-center py-1 border-t border-slate-100 dark:border-slate-700/40">
-                            <span class="text-slate-600 dark:text-slate-400">
-                                Extra Photos Subtotal
-                                <span class="block text-xs text-slate-400" id="photoDetails">0 photos @ $5/ea</span>
-                            </span>
-                            <span class="font-medium text-slate-800 dark:text-slate-200" id="subtotalPhotos">$0.00</span>
-                        </div>
-
-                        <div class="flex justify-between items-center py-1 border-t border-slate-100 dark:border-slate-700/40">
-                            <span class="text-slate-600 dark:text-slate-400">
-                                Travel & Fixed Overhead
-                                <span class="block text-xs text-slate-400" id="feeDetails">Travel + Fees</span>
-                            </span>
-                            <span class="font-medium text-slate-800 dark:text-slate-200" id="subtotalFees">$0.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Grand Total Banner -->
-                    <div class="mt-6 p-4 rounded-xl bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/50 flex flex-col items-center justify-center text-center">
-                        <span class="text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider">Estimated Total Fee</span>
-                        <span class="text-3xl sm:text-4xl font-extrabold text-brand-700 dark:text-brand-300 mt-1" id="totalFee">$0.00</span>
-                    </div>
+                    <h1 class="font-bold tracking-wider text-lg text-white">canon.moment.s</h1>
+                    <p class="text-xs text-slate-400">Professional Photography Estimator & Booking</p>
                 </div>
+            </div>
+            <div class="text-right hidden sm:block">
+                <span class="text-xs bg-slate-800 text-sky-400 py-1 px-3 rounded-full border border-slate-700 font-medium">
+                    <i class="fa-solid fa-circle text-[8px] mr-1 text-emerald-400 animate-pulse"></i> Booking Open
+                </span>
+            </div>
+        </div>
+    </header>
 
-                <!-- Action Button -->
-                <div class="mt-6">
-                    <button onclick="copyQuoteToClipboard()" class="w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                        <i data-lucide="copy" class="w-4 h-4"></i>
-                        <span id="copyBtnText">Copy Invoice Summary</span>
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Inputs & Presets (7 Cols) -->
+        <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Preset Packages Section -->
+            <div class="bg-cardbg rounded-2xl p-6 border border-slate-800 shadow-xl">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4 flex items-center">
+                    <i class="fa-solid fa-bolt text-amber-400 mr-2"></i> Quick Presets
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button type="button" onclick="applyPreset('standard3hr')" class="group text-left p-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all shadow-sm cursor-pointer">
+                        <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">3-Hour Shoot + 3-Hour Edit</div>
+                        <div class="text-xs text-slate-400 mt-1">Comprehensive portrait or event package</div>
+                    </button>
+                    <button type="button" onclick="applyPreset('mini15min')" class="group text-left p-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all shadow-sm cursor-pointer">
+                        <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">15-Minute Mini Session</div>
+                        <div class="text-xs text-slate-400 mt-1">Quick portrait shoot + 30 min edit</div>
                     </button>
                 </div>
             </div>
+
+            <!-- Time & Rate Customization -->
+            <div class="bg-cardbg rounded-2xl p-6 border border-slate-800 shadow-xl space-y-5">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-2 flex items-center">
+                    <i class="fa-solid fa-sliders text-sky-400 mr-2"></i> Session Configuration
+                </h2>
+
+                <!-- Shoot Duration -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="shootHours" class="text-sm font-medium text-slate-300">Shoot Duration</label>
+                        <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.0 hrs</span>
+                    </div>
+                    <input type="range" id="shootHours" min="0.25" max="8" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Editing Duration -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="editHours" class="text-sm font-medium text-slate-300">Editing Duration</label>
+                        <span id="editHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.0 hrs</span>
+                    </div>
+                    <input type="range" id="editHours" min="0.25" max="10" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Fixed Hourly Rates (Non-editable display) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-slate-800">
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+                        <span class="block text-xs font-medium text-slate-400 mb-1">Shoot Hourly Rate</span>
+                        <div class="text-lg font-bold text-slate-200 flex items-center">
+                            <span>$35.00</span>
+                            <span class="text-xs text-slate-400 font-normal ml-1">/ hr</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/80">
+                        <span class="block text-xs font-medium text-slate-400 mb-1">Editing Hourly Rate</span>
+                        <div class="text-lg font-bold text-slate-200 flex items-center">
+                            <span>$35.00</span>
+                            <span class="text-xs text-slate-400 font-normal ml-1">/ hr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physical Prints Add-on Section -->
+            <div class="bg-cardbg rounded-2xl p-6 border border-slate-800 shadow-xl space-y-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
+                            <i class="fa-solid fa-print text-indigo-400 mr-2"></i> Physical Prints Add-on
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Polaroid Style Wide 106mm by 86mm prints</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-2 py-1 rounded border border-emerald-900/50">$2.00 / print</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between pt-2">
+                    <label for="printQty" class="text-sm font-medium text-slate-300">Quantity of Prints</label>
+                    <div class="flex items-center space-x-3">
+                        <button type="button" onclick="adjustPrints(-1)" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 flex items-center justify-center text-slate-300 transition-colors cursor-pointer">-</button>
+                        <input type="number" id="printQty" value="0" min="0" oninput="calculateTotal()" class="w-16 py-1.5 text-center bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-sky-500 text-sm font-semibold">
+                        <button type="button" onclick="adjustPrints(1)" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 flex items-center justify-center text-slate-300 transition-colors cursor-pointer">+</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Toast Notification for Copying -->
-        <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 text-sm transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
-            <span id="toastMessage">Summary copied to clipboard!</span>
+        <!-- Right Column: Summary & Booking Request Form (5 Cols) -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Summary Breakdown Card -->
+            <div class="bg-cardbg rounded-2xl p-6 border border-slate-800 shadow-xl sticky top-24 space-y-6">
+                <h2 class="text-base font-bold text-white border-b border-slate-800 pb-3 flex items-center justify-between">
+                    <span>Estimate Summary</span>
+                    <i class="fa-solid fa-receipt text-sky-400"></i>
+                </h2>
+
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryShootLabel">Shoot (3.0 hrs @ $35/hr):</span>
+                        <span id="summaryShootCost" class="font-medium text-white">$105.00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryEditLabel">Editing (3.0 hrs @ $35/hr):</span>
+                        <span id="summaryEditCost" class="font-medium text-white">$105.00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryPrintsLabel">Prints (0 pcs @ $2.00):</span>
+                        <span id="summaryPrintsCost" class="font-medium text-white">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                    <span class="font-semibold text-slate-200">Total Investment:</span>
+                    <span id="grandTotal" class="text-2xl font-black text-sky-400">$210.00</span>
+                </div>
+
+                <!-- Booking Request Form -->
+                <div class="pt-4 border-t border-slate-800 space-y-4">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">Request This Booking</h3>
+                    
+                    <div>
+                        <label for="clientName" class="block text-xs font-medium text-slate-400 mb-1">Your Full Name</label>
+                        <input type="text" id="clientName" placeholder="Jane Doe" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-sky-500 text-sm">
+                    </div>
+
+                    <div>
+                        <label for="clientEmail" class="block text-xs font-medium text-slate-400 mb-1">Email Address</label>
+                        <input type="email" id="clientEmail" placeholder="jane@example.com" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-sky-500 text-sm">
+                    </div>
+
+                    <div>
+                        <label for="sessionDate" class="block text-xs font-medium text-slate-400 mb-1">Preferred Date</label>
+                        <input type="date" id="sessionDate" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-sky-500 text-sm">
+                    </div>
+
+                    <button type="button" onclick="submitBooking()" class="w-full py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                        <span>Send Booking Request</span>
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Footer -->
-        <footer class="mt-16 text-center text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-800 pt-6">
-            Custom Pricing & Hourly Rate Calculator &bull; Ready for GitHub Pages
-        </footer>
+    </main>
+
+    <!-- Custom Notification Modal (Alert alternative) -->
+    <div id="modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-cardbg border border-slate-800 rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+            <div id="modalIcon" class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl border border-emerald-500/30">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 id="modalTitle" class="text-lg font-bold text-white">Booking Request Sent</h3>
+            <p id="modalMessage" class="text-sm text-slate-300">Thank you! Your request has been logged successfully and linked to canon.moment.s.</p>
+            <button type="button" onclick="closeModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-xl transition-colors text-sm cursor-pointer">
+                Close
+            </button>
+        </div>
     </div>
 
-    <!-- Script Logic -->
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950/40 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 canon.moment.s. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
     <script>
-        // Preset Configurations
-        const presets = {
-            portrait: { shootHours: 1.5, shootRate: 75, editHours: 2, editRate: 40, extraPhotos: 3, photoRate: 15, travelFee: 20, fixedFee: 15 },
-            event: { shootHours: 4, shootRate: 100, editHours: 5, editRate: 50, extraPhotos: 10, photoRate: 12, travelFee: 50, fixedFee: 30 },
-            studio: { shootHours: 8, shootRate: 175, editHours: 8, editRate: 75, extraPhotos: 20, photoRate: 20, travelFee: 100, fixedFee: 150 }
-        };
+        const HOURLY_RATE = 35.00;
 
-        // Theme Switcher Logic
-        const themeToggleBtn = document.getElementById('themeToggle');
-        
-        // Default to dark mode or system preference
-        if (localStorage.theme === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            document.documentElement.classList.remove('dark');
-        } else {
-            document.documentElement.classList.add('dark');
-        }
-
-        themeToggleBtn.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
+        function formatDuration(hours) {
+            if (hours < 1) {
+                const minutes = Math.round(hours * 60);
+                return `${minutes} minutes`;
+            } else if (hours === 1) {
+                return `1.0 hour`;
             } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
+                return `${hours.toFixed(2)} hrs`;
             }
-        });
+        }
 
-        // Main Calculation Function
-        function calculate() {
+        function calculateTotal() {
             const shootHours = parseFloat(document.getElementById('shootHours').value) || 0;
-            const shootRate = parseFloat(document.getElementById('shootRate').value) || 0;
             const editHours = parseFloat(document.getElementById('editHours').value) || 0;
-            const editRate = parseFloat(document.getElementById('editRate').value) || 0;
-            const extraPhotos = parseFloat(document.getElementById('extraPhotos').value) || 0;
-            const photoRate = parseFloat(document.getElementById('photoRate').value) || 0;
-            const travelFee = parseFloat(document.getElementById('travelFee').value) || 0;
-            const fixedFee = parseFloat(document.getElementById('fixedFee').value) || 0;
+            const printQty = parseInt(document.getElementById('printQty').value) || 0;
 
-            const subtotalShoot = shootHours * shootRate;
-            const subtotalEdit = editHours * editRate;
-            const subtotalPhotos = extraPhotos * photoRate;
-            const subtotalFees = travelFee + fixedFee;
-            const total = subtotalShoot + subtotalEdit + subtotalPhotos + subtotalFees;
+            document.getElementById('shootHoursVal').innerText = formatDuration(shootHours);
+            document.getElementById('editHoursVal').innerText = formatDuration(editHours);
 
-            // Format numbers to currency
-            const fmt = (num) => '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const shootCost = shootHours * HOURLY_RATE;
+            const editCost = editHours * HOURLY_RATE;
+            const printCost = printQty * 2.00;
+            const grandTotal = shootCost + editCost + printCost;
 
-            document.getElementById('subtotalShoot').innerText = fmt(subtotalShoot);
-            document.getElementById('subtotalEdit').innerText = fmt(subtotalEdit);
-            document.getElementById('subtotalPhotos').innerText = fmt(subtotalPhotos);
-            document.getElementById('subtotalFees').innerText = fmt(subtotalFees);
-            document.getElementById('totalFee').innerText = fmt(total);
+            document.getElementById('summaryShootLabel').innerText = `Shoot (${formatDuration(shootHours)} @ $${HOURLY_RATE}/hr):`;
+            document.getElementById('summaryShootCost').innerText = '$' + shootCost.toFixed(2);
 
-            // Update details captions
-            document.getElementById('shootDetails').innerText = `${shootHours} hrs @ ${fmt(shootRate)}/hr`;
-            document.getElementById('editDetails').innerText = `${editHours} hrs @ ${fmt(editRate)}/hr`;
-            document.getElementById('photoDetails').innerText = `${extraPhotos} photos @ ${fmt(photoRate)}/ea`;
-            document.getElementById('feeDetails').innerText = `Travel (${fmt(travelFee)}) + Overhead (${fmt(fixedFee)})`;
+            document.getElementById('summaryEditLabel').innerText = `Editing (${formatDuration(editHours)} @ $${HOURLY_RATE}/hr):`;
+            document.getElementById('summaryEditCost').innerText = '$' + editCost.toFixed(2);
+
+            document.getElementById('summaryPrintsLabel').innerText = `Prints (${printQty} pcs @ $2.00, Polaroid Style Wide 106x86mm):`;
+            document.getElementById('summaryPrintsCost').innerText = '$' + printCost.toFixed(2);
+
+            document.getElementById('grandTotal').innerText = '$' + grandTotal.toFixed(2);
         }
 
-        // Apply selected Tier Rate
-        function applyTierRate(rate) {
-            document.getElementById('shootRate').value = rate;
-            calculate();
-            showToast(`Applied shoot rate of $${rate}/hr`);
-        }
-
-        // Load Preset Values
-        function loadPreset(key) {
-            const p = presets[key];
-            if (!p) return;
-            document.getElementById('shootHours').value = p.shootHours;
-            document.getElementById('shootRate').value = p.shootRate;
-            document.getElementById('editHours').value = p.editHours;
-            document.getElementById('editRate').value = p.editRate;
-            document.getElementById('extraPhotos').value = p.extraPhotos;
-            document.getElementById('photoRate').value = p.photoRate;
-            document.getElementById('travelFee').value = p.travelFee;
-            document.getElementById('fixedFee').value = p.fixedFee;
-            calculate();
-            showToast(`Loaded ${key.charAt(0).toUpperCase() + key.slice(1)} preset`);
-        }
-
-        // Reset Inputs
-        function resetCalculator() {
-            document.getElementById('calcForm').reset();
-            calculate();
-            showToast('Reset all calculator values');
-        }
-
-        // Copy Summary to Clipboard
-        function copyQuoteToClipboard() {
-            const fmt = (num) => '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            
-            const shootHours = parseFloat(document.getElementById('shootHours').value) || 0;
-            const shootRate = parseFloat(document.getElementById('shootRate').value) || 0;
-            const editHours = parseFloat(document.getElementById('editHours').value) || 0;
-            const editRate = parseFloat(document.getElementById('editRate').value) || 0;
-            const extraPhotos = parseFloat(document.getElementById('extraPhotos').value) || 0;
-            const photoRate = parseFloat(document.getElementById('photoRate').value) || 0;
-            const travelFee = parseFloat(document.getElementById('travelFee').value) || 0;
-            const fixedFee = parseFloat(document.getElementById('fixedFee').value) || 0;
-
-            const subtotalShoot = shootHours * shootRate;
-            const subtotalEdit = editHours * editRate;
-            const subtotalPhotos = extraPhotos * photoRate;
-            const subtotalFees = travelFee + fixedFee;
-            const total = subtotalShoot + subtotalEdit + subtotalPhotos + subtotalFees;
-
-            const summaryText = `--- PROJECT QUOTE ESTIMATE ---
-Shoot Time: ${shootHours} hrs @ $${shootRate}/hr = ${fmt(subtotalShoot)}
-Editing Time: ${editHours} hrs @ $${editRate}/hr = ${fmt(subtotalEdit)}
-Extra Deliverables: ${extraPhotos} photos @ $${photoRate}/ea = ${fmt(subtotalPhotos)}
-Travel & Overhead Fees: ${fmt(subtotalFees)}
--------------------------------
-TOTAL ESTIMATED FEE: ${fmt(total)}
--------------------------------`;
-
-            // Copy to clipboard using textarea fallback for iframe security compatibility
-            const textarea = document.createElement('textarea');
-            textarea.value = summaryText;
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showToast('Quote summary copied to clipboard!');
-            } catch (err) {
-                showToast('Failed to copy summary');
+        function applyPreset(type) {
+            if (type === 'standard3hr') {
+                document.getElementById('shootHours').value = 3.0;
+                document.getElementById('editHours').value = 3.0;
+            } else if (type === 'mini15min') {
+                document.getElementById('shootHours').value = 0.25;
+                document.getElementById('editHours').value = 0.5;
             }
-            document.body.removeChild(textarea);
+            calculateTotal();
         }
 
-        // Toast Handler
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            toastMessage.innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-            
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+        function adjustPrints(amount) {
+            const printInput = document.getElementById('printQty');
+            let current = parseInt(printInput.value) || 0;
+            current = Math.max(0, current + amount);
+            printInput.value = current;
+            calculateTotal();
         }
 
-        // Initialize icons and initial calculations on load
+        function submitBooking() {
+            const name = document.getElementById('clientName').value.trim();
+            const email = document.getElementById('clientEmail').value.trim();
+            const date = document.getElementById('sessionDate').value;
+            const total = document.getElementById('grandTotal').innerText;
+
+            if (!name || !email || !date) {
+                showModal('Missing Details', 'Please fill in your name, email, and preferred session date before submitting.', false);
+                return;
+            }
+
+            showModal('Booking Request Sent!', `Thank you ${name}! Your request for ${date} totaling ${total} has been submitted to canon.moment.s. We will reach out to ${email} shortly.`, true);
+        }
+
+        function showModal(title, message, success) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            const iconDiv = document.getElementById('modalIcon');
+            if (success) {
+                iconDiv.className = 'w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-xl border border-emerald-500/30';
+                iconDiv.innerHTML = '<i class="fa-solid fa-check"></i>';
+            } else {
+                iconDiv.className = 'w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-xl border border-amber-500/30';
+                iconDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            }
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // Initialize calculation on load
         window.onload = function() {
-            lucide.createIcons();
-            calculate();
+            calculateTotal();
         };
     </script>
 </body>
 </html>
-```
