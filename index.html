@@ -25,6 +25,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("uN6ugtrZOW7TRz5H1");
+        })();
+    </script>
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
@@ -293,7 +300,23 @@
                 return;
             }
 
-            showModal('Booking Request Sent!', `Thank you ${name}! Your request for ${date} totaling ${total} has been submitted to canon.moment.s. We will reach out to ${email} shortly.`, true);
+            const templateParams = {
+                client_name: name,
+                client_email: email,
+                session_date: date,
+                shoot_hours: document.getElementById('shootHoursVal').innerText,
+                edit_hours: document.getElementById('editHoursVal').innerText,
+                print_qty: document.getElementById('printQty').value,
+                grand_total: total
+            };
+
+            emailjs.send('service_nqlvknd', 'template_x9jiisq', templateParams)
+                .then(function(response) {
+                    showModal('Booking Request Sent!', `Thank you ${name}! Your request for ${date} totaling ${total} has been sent to your Gmail inbox. We will reach out to ${email} shortly.`, true);
+                }, function(error) {
+                    showModal('Sending Failed', 'Sorry, something went wrong sending your request. Please try again.', false);
+                    console.error('FAILED...', error);
+                });
         }
 
         function showModal(title, message, success) {
