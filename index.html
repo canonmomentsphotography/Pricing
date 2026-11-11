@@ -71,12 +71,12 @@
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button type="button" onclick="applyPreset('standard3hr')" class="group text-left p-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all shadow-sm cursor-pointer">
-                        <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">3-Hour Shoot + 3-Hour Edit</div>
+                        <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">3-Hour Shoot + 3.5-Hour Edit</div>
                         <div class="text-xs text-slate-400 mt-1">Comprehensive portrait or event package</div>
                     </button>
                     <button type="button" onclick="applyPreset('mini15min')" class="group text-left p-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all shadow-sm cursor-pointer">
                         <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">15-Minute Mini Session</div>
-                        <div class="text-xs text-slate-400 mt-1">Quick portrait shoot + 30 min edit</div>
+                        <div class="text-xs text-slate-400 mt-1">Quick portrait shoot + 45 min edit</div>
                     </button>
                 </div>
             </div>
@@ -94,15 +94,7 @@
                         <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.0 hrs</span>
                     </div>
                     <input type="range" id="shootHours" min="0.25" max="8" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
-                </div>
-
-                <!-- Editing Duration -->
-                <div>
-                    <div class="flex justify-between items-center mb-1.5">
-                        <label for="editHours" class="text-sm font-medium text-slate-300">Editing Duration</label>
-                        <span id="editHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.0 hrs</span>
-                    </div>
-                    <input type="range" id="editHours" min="0.25" max="10" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
+                    <p class="text-xs text-slate-400 mt-1">Editing time is automatically set to shoot duration + 30 extra minutes.</p>
                 </div>
 
                 <!-- Fixed Hourly Rates (Non-editable display) -->
@@ -166,8 +158,8 @@
                         <span id="summaryShootCost" class="font-medium text-white">$105.00</span>
                     </div>
                     <div class="flex justify-between text-slate-300">
-                        <span id="summaryEditLabel">Editing (3.0 hrs @ $35/hr):</span>
-                        <span id="summaryEditCost" class="font-medium text-white">$105.00</span>
+                        <span id="summaryEditLabel">Editing (3.5 hrs @ $35/hr):</span>
+                        <span id="summaryEditCost" class="font-medium text-white">$122.50</span>
                     </div>
                     <div class="flex justify-between text-slate-300">
                         <span id="summaryPrintsLabel">Prints (0 pcs @ $2.00):</span>
@@ -177,7 +169,7 @@
 
                 <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
                     <span class="font-semibold text-slate-200">Total Investment:</span>
-                    <span id="grandTotal" class="text-2xl font-black text-sky-400">$210.00</span>
+                    <span id="grandTotal" class="text-2xl font-black text-sky-400">$227.50</span>
                 </div>
 
                 <!-- Booking Request Form -->
@@ -247,11 +239,11 @@
 
         function calculateTotal() {
             const shootHours = parseFloat(document.getElementById('shootHours').value) || 0;
-            const editHours = parseFloat(document.getElementById('editHours').value) || 0;
+            // Automatically set editing duration to shoot duration + 0.5 hours (30 minutes)
+            const editHours = shootHours + 0.5;
             const printQty = parseInt(document.getElementById('printQty').value) || 0;
 
             document.getElementById('shootHoursVal').innerText = formatDuration(shootHours);
-            document.getElementById('editHoursVal').innerText = formatDuration(editHours);
 
             const shootCost = shootHours * HOURLY_RATE;
             const editCost = editHours * HOURLY_RATE;
@@ -273,10 +265,8 @@
         function applyPreset(type) {
             if (type === 'standard3hr') {
                 document.getElementById('shootHours').value = 3.0;
-                document.getElementById('editHours').value = 3.0;
             } else if (type === 'mini15min') {
                 document.getElementById('shootHours').value = 0.25;
-                document.getElementById('editHours').value = 0.5;
             }
             calculateTotal();
         }
@@ -300,12 +290,15 @@
                 return;
             }
 
+            const shootHoursVal = parseFloat(document.getElementById('shootHours').value) || 0;
+            const editHoursVal = shootHoursVal + 0.5;
+
             const templateParams = {
                 client_name: name,
                 client_email: email,
                 session_date: date,
                 shoot_hours: document.getElementById('shootHoursVal').innerText,
-                edit_hours: document.getElementById('editHoursVal').innerText,
+                edit_hours: formatDuration(editHoursVal),
                 print_qty: document.getElementById('printQty').value,
                 grand_total: total
             };
