@@ -29,7 +29,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            emailjs.init("uN6ugtrZOW7TRz5H1");
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init("uN6ugtrZOW7TRz5H1");
+            }
         })();
     </script>
     <style>
@@ -91,7 +93,7 @@
                 <div>
                     <div class="flex justify-between items-center mb-1.5">
                         <label for="shootHours" class="text-sm font-medium text-slate-300">Shoot Duration</label>
-                        <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.0 hrs</span>
+                        <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.00 hrs</span>
                     </div>
                     <input type="range" id="shootHours" min="0.25" max="8" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
                     <p class="text-xs text-slate-400 mt-1">Editing time is automatically set to shoot duration + 30 extra minutes.</p>
@@ -113,6 +115,56 @@
                             <span class="text-xs text-slate-400 font-normal ml-1">/ hr</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Commercial Usage License Section -->
+            <div class="bg-cardbg rounded-2xl p-6 border border-slate-800 shadow-xl space-y-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center">
+                            <i class="fa-solid fa-briefcase text-sky-400 mr-2"></i> Usage & Commercial Licensing
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1">Select usage rights based on how your organization will publish the images</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <!-- Personal Use (Default) -->
+                    <button type="button" id="lic-personal" onclick="selectLicense('personal')" class="license-btn text-left p-3.5 rounded-xl bg-sky-950/40 border-2 border-sky-500 transition-all cursor-pointer">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-sm text-white">Personal Use Only</span>
+                            <span class="text-xs font-bold text-emerald-400">Included</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Social media sharing, personal prints & cards</p>
+                    </button>
+
+                    <!-- Tier 1: Local Business -->
+                    <button type="button" id="lic-tier1" onclick="selectLicense('tier1')" class="license-btn text-left p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-sm text-slate-200">Tier 1: Local Business</span>
+                            <span class="text-xs font-bold text-sky-400">+75% Shoot</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">1 Yr • Organic social, website & digital flyers</p>
+                    </button>
+
+                    <!-- Tier 2: Paid Ads & Print -->
+                    <button type="button" id="lic-tier2" onclick="selectLicense('tier2')" class="license-btn text-left p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-sm text-slate-200">Tier 2: Ads & Print</span>
+                            <span class="text-xs font-bold text-sky-400">+150% Shoot</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">2–3 Yrs • Paid ads, banners & Canadian print</p>
+                    </button>
+
+                    <!-- Tier 3: Perpetual Buyout -->
+                    <button type="button" id="lic-tier3" onclick="selectLicense('tier3')" class="license-btn text-left p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold text-sm text-slate-200">Tier 3: Perpetual</span>
+                            <span class="text-xs font-bold text-sky-400">+275% Shoot</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">Unlimited • Worldwide permanent commercial use</p>
+                    </button>
                 </div>
             </div>
 
@@ -154,15 +206,19 @@
 
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between text-slate-300">
-                        <span id="summaryShootLabel">Shoot (3.0 hrs @ $35/hr):</span>
+                        <span id="summaryShootLabel">Shoot (3.00 hrs @ $35/hr):</span>
                         <span id="summaryShootCost" class="font-medium text-white">$105.00</span>
                     </div>
                     <div class="flex justify-between text-slate-300">
-                        <span id="summaryEditLabel">Editing (3.5 hrs @ $35/hr):</span>
+                        <span id="summaryEditLabel">Editing (3.50 hrs @ $35/hr):</span>
                         <span id="summaryEditCost" class="font-medium text-white">$122.50</span>
                     </div>
                     <div class="flex justify-between text-slate-300">
-                        <span id="summaryPrintsLabel">Prints (0 pcs @ $2.00):</span>
+                        <span id="summaryLicenseLabel">License (Personal Use Only):</span>
+                        <span id="summaryLicenseCost" class="font-medium text-white">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryPrintsLabel">Prints (0 pcs @ $2.00, Polaroid Style Wide 106x86mm):</span>
                         <span id="summaryPrintsCost" class="font-medium text-white">$0.00</span>
                     </div>
                 </div>
@@ -187,8 +243,16 @@
                     </div>
 
                     <div>
-                        <label for="sessionDate" class="block text-xs font-medium text-slate-400 mb-1">Preferred Date</label>
-                        <input type="date" id="sessionDate" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-sky-500 text-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <label for="sessionDate" class="block text-xs font-medium text-slate-400">Available Dates</label>
+                            <button type="button" onclick="loadAvailableDates()" title="Refresh available dates" class="text-[11px] text-sky-400 hover:text-sky-300 flex items-center space-x-1 transition-colors cursor-pointer">
+                                <i id="refreshDatesIcon" class="fa-solid fa-rotate-right text-[10px]"></i>
+                                <span>Refresh</span>
+                            </button>
+                        </div>
+                        <select id="sessionDate" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-slate-100 focus:outline-none focus:border-sky-500 text-sm cursor-pointer">
+                            <option value="">Loading available dates...</option>
+                        </select>
                     </div>
 
                     <button type="button" onclick="submitBooking()" class="w-full py-3 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center space-x-2 cursor-pointer">
@@ -225,6 +289,15 @@
     <!-- JavaScript Logic -->
     <script>
         const HOURLY_RATE = 35.00;
+        const DATES_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRyLM0eVB6BCoI4k7MTJAjtrmtXKOpcYfR9IyKMu4DX3eguNm-D1zzypl5FEl0kYq_fhdg9LmqD44a6/pub?gid=572893880&single=true&output=csv";
+        let selectedLicense = 'personal';
+
+        const LICENSE_TIERS = {
+            personal: { label: 'Personal Use Only', multiplier: 0 },
+            tier1: { label: 'Tier 1: Local Business (1 Yr)', multiplier: 0.75 },
+            tier2: { label: 'Tier 2: Paid Ads & Print (2–3 Yrs)', multiplier: 1.50 },
+            tier3: { label: 'Tier 3: Perpetual Buyout (Unlimited)', multiplier: 2.75 }
+        };
 
         function formatDuration(hours) {
             if (hours < 1) {
@@ -237,6 +310,23 @@
             }
         }
 
+        function selectLicense(tierKey) {
+            selectedLicense = tierKey;
+
+            // Reset styling on all license buttons
+            document.querySelectorAll('.license-btn').forEach(btn => {
+                btn.className = 'license-btn text-left p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-sky-500/50 transition-all cursor-pointer';
+            });
+
+            // Highlight the active button
+            const activeBtn = document.getElementById('lic-' + tierKey);
+            if (activeBtn) {
+                activeBtn.className = 'license-btn text-left p-3.5 rounded-xl bg-sky-950/40 border-2 border-sky-500 transition-all cursor-pointer';
+            }
+
+            calculateTotal();
+        }
+
         function calculateTotal() {
             const shootHours = parseFloat(document.getElementById('shootHours').value) || 0;
             // Automatically set editing duration to shoot duration + 0.5 hours (30 minutes)
@@ -247,14 +337,19 @@
 
             const shootCost = shootHours * HOURLY_RATE;
             const editCost = editHours * HOURLY_RATE;
+            const licenseObj = LICENSE_TIERS[selectedLicense];
+            const licenseCost = shootCost * licenseObj.multiplier;
             const printCost = printQty * 2.00;
-            const grandTotal = shootCost + editCost + printCost;
+            const grandTotal = shootCost + editCost + licenseCost + printCost;
 
             document.getElementById('summaryShootLabel').innerText = `Shoot (${formatDuration(shootHours)} @ $${HOURLY_RATE}/hr):`;
             document.getElementById('summaryShootCost').innerText = '$' + shootCost.toFixed(2);
 
             document.getElementById('summaryEditLabel').innerText = `Editing (${formatDuration(editHours)} @ $${HOURLY_RATE}/hr):`;
             document.getElementById('summaryEditCost').innerText = '$' + editCost.toFixed(2);
+
+            document.getElementById('summaryLicenseLabel').innerText = `License (${licenseObj.label}):`;
+            document.getElementById('summaryLicenseCost').innerText = '$' + licenseCost.toFixed(2);
 
             document.getElementById('summaryPrintsLabel').innerText = `Prints (${printQty} pcs @ $2.00, Polaroid Style Wide 106x86mm):`;
             document.getElementById('summaryPrintsCost').innerText = '$' + printCost.toFixed(2);
@@ -286,12 +381,13 @@
             const total = document.getElementById('grandTotal').innerText;
 
             if (!name || !email || !date) {
-                showModal('Missing Details', 'Please fill in your name, email, and preferred session date before submitting.', false);
+                showModal('Missing Details', 'Please fill in your name, email, and select an available session date before submitting.', false);
                 return;
             }
 
             const shootHoursVal = parseFloat(document.getElementById('shootHours').value) || 0;
             const editHoursVal = shootHoursVal + 0.5;
+            const licenseObj = LICENSE_TIERS[selectedLicense];
 
             const templateParams = {
                 client_name: name,
@@ -299,6 +395,7 @@
                 session_date: date,
                 shoot_hours: document.getElementById('shootHoursVal').innerText,
                 edit_hours: formatDuration(editHoursVal),
+                commercial_license: `${licenseObj.label} (${document.getElementById('summaryLicenseCost').innerText})`,
                 print_qty: document.getElementById('printQty').value,
                 grand_total: total
             };
@@ -330,9 +427,116 @@
             document.getElementById('modal').classList.add('hidden');
         }
 
-        // Initialize calculation on load
+        // Parse a CSV line cleanly handling optional quoted values
+        function parseCSVRow(rowText) {
+            const cells = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < rowText.length; i++) {
+                const char = rowText[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    cells.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            cells.push(current.trim());
+            return cells;
+        }
+
+        // Format YYYY-MM-DD into a readable label while preserving custom date strings
+        function formatDisplayDate(rawDate) {
+            const isoMatch = rawDate.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+            if (isoMatch) {
+                const year = parseInt(isoMatch[1], 10);
+                const month = parseInt(isoMatch[2], 10) - 1;
+                const day = parseInt(isoMatch[3], 10);
+                const dateObj = new Date(year, month, day);
+                if (!isNaN(dateObj.getTime())) {
+                    return dateObj.toLocaleDateString('en-CA', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                }
+            }
+            return rawDate;
+        }
+
+        // Fetch and populate available dates from the published Google Sheet CSV
+        async function loadAvailableDates() {
+            const dateSelect = document.getElementById('sessionDate');
+            const refreshIcon = document.getElementById('refreshDatesIcon');
+
+            if (refreshIcon) {
+                refreshIcon.classList.add('animate-spin');
+            }
+            dateSelect.innerHTML = '<option value="">Loading available dates...</option>';
+
+            try {
+                const response = await fetch(`${DATES_SHEET_CSV_URL}&t=${Date.now()}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error ${response.status}`);
+                }
+
+                const csvText = await response.text();
+                const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+
+                dateSelect.innerHTML = '<option value="">Select an available date...</option>';
+                let availableCount = 0;
+
+                lines.forEach((line, index) => {
+                    const cells = parseCSVRow(line);
+                    const rawDate = (cells[0] || '').trim();
+                    const rawStatus = (cells[1] || '').trim().toLowerCase();
+
+                    if (!rawDate) return;
+
+                    // Skip header rows (e.g., "Date", "Available Dates", "Session Date")
+                    const lowerDate = rawDate.toLowerCase();
+                    if (index === 0 && (lowerDate.includes('date') || lowerDate.includes('day') || lowerDate.includes('slot'))) {
+                        return;
+                    }
+
+                    // Allow single-column lists (empty status) or explicit open statuses
+                    const isAvailable =
+                        cells.length === 1 ||
+                        rawStatus === '' ||
+                        rawStatus === 'available' ||
+                        rawStatus === 'open' ||
+                        rawStatus === 'yes';
+
+                    if (isAvailable) {
+                        const option = document.createElement('option');
+                        option.value = rawDate;
+                        option.textContent = formatDisplayDate(rawDate);
+                        dateSelect.appendChild(option);
+                        availableCount++;
+                    }
+                });
+
+                if (availableCount === 0) {
+                    dateSelect.innerHTML = '<option value="">No open dates currently listed</option>';
+                }
+            } catch (error) {
+                console.error('Error loading available dates from Google Sheet:', error);
+                dateSelect.innerHTML = '<option value="">Unable to load dates — click Refresh</option>';
+            } finally {
+                if (refreshIcon) {
+                    refreshIcon.classList.remove('animate-spin');
+                }
+            }
+        }
+
+        // Initialize calculation and live dates on load
         window.onload = function() {
             calculateTotal();
+            loadAvailableDates();
         };
     </script>
 </body>
