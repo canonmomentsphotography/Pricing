@@ -102,7 +102,7 @@
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button type="button" onclick="applyPreset('standard3hr')" class="group text-left p-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all shadow-sm cursor-pointer">
-                        <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">3-Hour Shoot + 3.5-Hour Edit</div>
+                        <div class="font-semibold text-slate-200 group-hover:text-sky-400 transition-colors">5-Hour Shoot + 5.5-Hour Edit</div>
                         <div class="text-xs text-slate-400 mt-1">Comprehensive portrait or event package</div>
                     </button>
                     <button type="button" onclick="applyPreset('mini15min')" class="group text-left p-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all shadow-sm cursor-pointer">
@@ -122,9 +122,9 @@
                 <div>
                     <div class="flex justify-between items-center mb-1.5">
                         <label for="shootHours" class="text-sm font-medium text-slate-300">Shoot Duration</label>
-                        <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">3.00 hrs</span>
+                        <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">5.00 hrs</span>
                     </div>
-                    <input type="range" id="shootHours" min="0.25" max="8" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
+                    <input type="range" id="shootHours" min="0.25" max="5" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
                     <p class="text-xs text-slate-400 mt-1">Editing time is automatically set to shoot duration + 30 extra minutes.</p>
                 </div>
 
