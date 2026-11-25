@@ -124,7 +124,7 @@
                         <label for="shootHours" class="text-sm font-medium text-slate-300">Shoot Duration</label>
                         <span id="shootHoursVal" class="text-sm font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded-md border border-sky-900/50">5.00 hrs</span>
                     </div>
-                    <input type="range" id="shootHours" min="0.25" max="5" step="0.25" value="3" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
+                    <input type="range" id="shootHours" min="0.25" max="5" step="0.25" value="5" oninput="calculateTotal()" class="w-full accent-sky-500 bg-slate-900 h-2 rounded-lg cursor-pointer">
                     <p class="text-xs text-slate-400 mt-1">Editing time is automatically set to shoot duration + 30 extra minutes.</p>
                 </div>
 
@@ -235,9 +235,27 @@
 
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between text-slate-300">
-                        <span id="summaryShootLabel">Shoot (3.00 hrs @ $35/hr):</span>
-                        <span id="summaryShootCost" class="font-medium text-white">$105.00</span>
+                        <span id="summaryShootLabel">Shoot (5.00 hrs @ $35/hr):</span>
+                        <span id="summaryShootCost" class="font-medium text-white">$175.00</span>
                     </div>
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryEditLabel">Editing (5.50 hrs @ $35/hr):</span>
+                        <span id="summaryEditCost" class="font-medium text-white">$192.50</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryLicenseLabel">License (Personal Use Only):</span>
+                        <span id="summaryLicenseCost" class="font-medium text-white">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-slate-300">
+                        <span id="summaryPrintsLabel">Prints (0 pcs @ $2.00, Polaroid Style Wide 106x86mm):</span>
+                        <span id="summaryPrintsCost" class="font-medium text-white">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                    <span class="font-semibold text-slate-200">Total Investment:</span>
+                    <span id="grandTotal" class="text-2xl font-black text-sky-400">$367.50</span>
+                </div>
                     <div class="flex justify-between text-slate-300">
                         <span id="summaryEditLabel">Editing (3.50 hrs @ $35/hr):</span>
                         <span id="summaryEditCost" class="font-medium text-white">$122.50</span>
@@ -406,8 +424,8 @@
         }
 
         function applyPreset(type) {
-            if (type === 'standard3hr') {
-                document.getElementById('shootHours').value = 3.0;
+            if (type === 'standard5hr') {
+                document.getElementById('shootHours').value = 5.0;
             } else if (type === 'mini15min') {
                 document.getElementById('shootHours').value = 0.25;
             }
